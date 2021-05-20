@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Basic AJAX Demo</title>
+		<link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="main">
+			<h2>Get The Latest Content:</h2>
+			<div class='content' id="content">
+				<input type="button" class="button" value="Get Content" id="btn_content" onclick="getContent();"/>
+			</div>
+
+            <div id="onready">
+                <h2>The XMLHttpRequest Object</h2>
+                <button type="button" onclick="stateChange()">Change Content</button>
+                </div>
+                
+		<script type="text/javascript">
+          //STEP 1: XMLH ttpRequest();
+          //STEP 2: (Call on the AJAX Open();)
+          //STEP 3: Define the AJAX Callback
+          //STEP 4: Call on the AJAC Send();
+
+            //STEP 1:setup the xml http request object (instantiate AJAX Object) (has a basic syntax)
+            var ajax = new XMLHttpRequest(); //set up variable. a new instanmce,  
+            //making a new XMLHttpRequest object that instructs the browser that we're going to be dealing with ajax
+            //and pass that with the name of ajax, we now just reference ajax instead of XMLHttpRequest
+            
+            //STEP 2: (a Built in method) prepare the open ajax request 
+
+            //requires two parameters. when dealing with browsers and dealing with web servers, will be using GET or POST method
+
+            //step up an open method, when useing the open method you have to use http method of sending information to the server
+            //instructions on how to handle the data, based on web browsert, the get or opost metho going to define
+            ajax.open('GET', 'content.html'); //use AJAX open method (Get method, 'address' where we're sending the data, the information we're going to get)
+             
+            //GET recieve info from server (sends info out in the open, security isn't something will have) 
+            //POST to send info to the server (when want to send  secure info to server, as it sends its info seperately from URL)
+
+            //STEP 3: define the ajax response callback method
+
+            //block of code, broswers has instructions on what to do when it receives the information, response back from the server 
+            //different modes, different ready state changes that its watching for
+            //when its not doing anything, in its ready stage, state might be 2 or 3, has values, when infor gets successful sent, 
+            //server has parsed and sent back as a response, now waiting for us to do something with it, its a ready state of 4
+            
+            ajax.onreadystatechange = function() { //call ajax, calls its a onreadystatechange, setup a function
+                if (ajax.readyState == 4) { //only want to watch for IF the server has succesful sent information back to us, the ready state = 4, 
+                  //if its got errors messages, if its not quite got the ino back to use we don't want this block of code to fire off, only succuessful
+                    document.getElementById('content').innerHTML = ajax.responseText; //,using some vanilla JS, property response text, will place in div tag
+                    //going to get infor from server, requesting data from content
+                }
+            }
+              //haven't sent the request yet
+              //need to define trigger or event DOM will be watching for
+              //eg on button click
+
+            //STEP 4 send the ajax request for data
+            function getContent() {
+                ajax.send(); //using send method, no parameters to put in (don't have anything to send infor, just requesting)
+                document.getElementById('btn_content').style.display='none'; //affecting the 'style' will 'hide' button 
+            }
+			
+          //Challenge 23
+          function stateChange() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) { //When readyState is 4 and status is 200, the response is ready:
+              document.getElementById("onready").innerHTML =
+              this.responseText;
+            }
+          };
+          xhttp.open("GET", "AJAX_Content.html", true);
+          xhttp.send();
+        }
+		</script>
+    </body>
+</html>
